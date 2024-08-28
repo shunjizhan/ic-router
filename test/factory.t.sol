@@ -60,7 +60,7 @@ contract RouterFactoryTest is Test {
         console.log("recipient balance before:", recipientBal0);
 
         vm.startPrank(relayer);
-        routerFactory.deployRouterAndExecute(steps, recipient, topups);
+        routerFactory.deployRouterAndExecute(topups, steps, recipient);
         vm.stopPrank();
 
         uint256 relayerBal1 = token.balanceOf(relayer);

@@ -20,19 +20,19 @@ contract RouterFactory {
     ) public returns (Router) {
         require(steps.length > 0, "RouterFactory: No steps provided");
         require(recipient != address(0), "RouterFactory: Invalid recipient");
-        
+
         bytes32 salt = keccak256(abi.encode(steps, recipient));
-        
+
         Router router = new Router{salt: salt}(steps, recipient);
-        
+
         emit RouterDeployed(address(router), recipient);
         return router;
     }
 
     function deployRouterAndExecute(
+        RouterTopUp[] memory topUps,
         Router.RouterStep[] memory steps,
-        address recipient,
-        RouterTopUp[] memory topUps
+        address recipient
     ) public {
         Router router = deployRouter(steps, recipient);
 
