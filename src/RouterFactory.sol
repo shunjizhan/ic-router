@@ -29,20 +29,25 @@ contract RouterFactory {
         return router;
     }
 
-    function deployRouterAndExecute(
+    function topUpRouter(
         RouterTopUp[] memory topUps,
-        Router.RouterStep[] memory steps,
-        address recipient
+        Router router
     ) public {
-        Router router = deployRouter(steps, recipient);
-
         for (uint i = 0; i < topUps.length; i++) {
             require(
                 topUps[i].token.transferFrom(msg.sender, address(router), topUps[i].amount),
                 "RouterFactory: Token transfer to router failed"
             );
         }
+    }
 
+    function deployRouterAndExecute(
+        RouterTopUp[] memory topUps,
+        Router.RouterStep[] memory steps,
+        address recipient
+    ) public {
+        Router router = deployRouter(steps, recipient);
+        topUpRouter(topUps, router);
         router.execute();
     }
 }
